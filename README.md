@@ -13,10 +13,6 @@ let g:kintai#configuration = {
   \ 'url' : 'http://kintai.com/report.php',
   \ 'body' : "# 本日の予定\n",
   \ }
-
-function! g:kintai#configuration.send_request()
-  call kintai#send_request()
-endfunction
 ```
 
 **My configuration**
@@ -47,9 +43,5 @@ function! g:kintai#configuration.body()
   else
     return  "■業務内容\n○大項目\n・詳細の説明\n■明日やること\n○大項目\n・詳細の説明\n■やり残していること\n○大項目\n・詳細の説明\n■一言"
   end
-endfunction
-
-function! g:kintai#configuration.send_request()
-  call kintai#send_request()
 endfunction
 ```
