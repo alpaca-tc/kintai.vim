@@ -1,12 +1,11 @@
-function! s:build_template() "{{{
-  let body = s:configuration('body')
+function! s:build_template(content)
   let temp = tempname()
-  call writefile(split(body, '\n'), temp)
+  call writefile(split(a:content, '\n'), temp)
 
   return temp
-endfunction"}}}
+endfunction
 
-function! s:configuration(key) "{{{
+function! kintai#get_configuration(key) "{{{
   if exists('*g:kintai#configuration.' . a:key)
     return g:kintai#configuration[a:key]()
   elseif has_key(g:kintai#configuration, a:key)
@@ -15,30 +14,20 @@ function! s:configuration(key) "{{{
 endfunction"}}}
 
 function! kintai#send_request() "{{{
-  let url = s:configuration('url')
+  let url = kintai#get_configuration('url')
   %yank
   execute 'OpenBrowser' url
 endfunction"}}}
 
-function! kintai#open_template() "{{{
-  let template = s:build_template()
+function! kintai#open_template(content) "{{{
+  let template = s:build_template(a:content)
   new `=template`
   call s:set_variables()
 
   augroup AlpacaTemplateConfiguration
-    autocmd BufWriteCmd <buffer> call s:configuration('send_request')
+    autocmd BufWriteCmd <buffer> call kintai#get_configuration('send_request')
   augroup END
   doautocmd User BuildKintaiPost
-endfunction"}}}
-
-function! s:get_configuration() "{{{
-  let hours = str2nr(strftime("%H"))
-
-  if hours < 12
-    return s:morning
-  else
-    return s:night
-  endif
 endfunction"}}}
 
 function! s:set_variables() "{{{

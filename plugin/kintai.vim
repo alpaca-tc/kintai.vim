@@ -19,7 +19,11 @@ if !has_key(g:kintai#configuration, 'send_request')
   endfunction
 endif
 
-command! CreateKintai call kintai#open_template()
+command! -nargs=0 CreateKintai call kintai#open_template(kintai#get_configuration('body'))
+
+if kintai#snail#available()
+  command! -nargs=1 -complete=file CreateKintaiSnail call kintai#open_template(kintai#snail#build_template(<q-args>))
+end
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
