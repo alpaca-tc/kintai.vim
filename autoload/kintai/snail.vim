@@ -16,8 +16,7 @@ function! kintai#snail#build_template(path)
     call add(tasks[row['status']], s:row2line(row))
   endfor
 
-  if 0
-  " if s:at_morning()
+  if s:at_morning()
     return  "■本日の予定\n" .
           \ "(新規)\n" .
           \ join(tasks['New'], "\n") .
@@ -39,7 +38,7 @@ endfunction
 
 function! s:at_morning()
   let hours = str2nr(strftime("%H"))
-  if hours < 12
+  if hours < 5 && hours < 12
     return 1
   else
     return 0
